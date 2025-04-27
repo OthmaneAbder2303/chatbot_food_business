@@ -12,7 +12,7 @@ cnx = psycopg2.connect(
 )
 
 # Function to insert an order item into the orders table
-def insert_order_item(food_item: str, quantity: int, order_id: int) -> int:
+def insert_order_item(order_id: int, food_item: str, quantity: int) -> int:
     try:
         cursor = cnx.cursor()
 
@@ -162,3 +162,4 @@ if __name__ == "__main__":
     # insert_order_item("Pizza", 2, 100)
     # insert_order_tracking(100, "in progress")
     print(get_next_order_id())
+    print(get_order_status(41))
