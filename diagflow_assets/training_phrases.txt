@@ -14,6 +14,19 @@ Intent= new.order
 =================
 new order
 Place new order
+I want to order some food
+Start a new order, please
+Can you take my order?
+I'd like to place an order
+Let’s get a new order going
+Order something for me
+I’m ready to order
+Can we start ordering?
+New food order, please
+I’d love to order now
+Take my order, please
+Let me order some stuff
+Begin a new order
 
 	Text Response = 
 		Ok, starting a new order. You can say things like "I want two tagines and one Moroccan mint tea". Make sure to specify a quantity for every food item! Also, we have only the following items on our menu: Tagine, Couscous, Harira, Pastilla, Mechoui, Zaalouk, Moroccan Mint Tea, Khobz, and Chebakia.
@@ -23,7 +36,7 @@ Place new order
 Intent= order.add - context: ongoing-order
 ==========================================
 Give me 2 plates of couscous, one tagine
-I'd like to order two plates of couscous, one tagine, and 3 Moroccan mint teas, please.
+I'd like to order two plates of couscous, one tagine, and 3 Moroccan mint teas, please
 Can you please get me two servings of couscous, one tagine, and one Moroccan mint tea?
 Please prepare 2 portions of couscous, along with one tagine and 1 Moroccan mint tea for me
 3 pastilla, 2 Moroccan mint teas, 1 harira
@@ -33,10 +46,25 @@ I want 1 Moroccan mint tea, 2 couscous, and one khobz, do it fast plz
 In addition, add 1 harira and 2 tagines
 Moreover, include 2 Moroccan mint teas
 Also, please give me 2 Moroccan mint teas
-Additionally, I'd like 2 Moroccan mint teas.
+Additionally, I'd like 2 Moroccan mint teas
 2 tagines and ok let's add one pastilla too
 3 pastilla
 Oh yes, add one harira as well
+Can you throw in 2 khobz and 1 chebakia?
+I’ll have 3 portions of mechoui and 2 Moroccan mint teas
+Add 1 zaalouk and 2 tagines to my order
+Please include one pastilla and two couscous
+Yo, get me 2 harira and 1 khobz quick
+I’d like to order 3 chebakia and 1 tagine, please
+Can you make it 2 mechoui and 1 Moroccan mint tea?
+Put 2 pastilla and 1 zaalouk on my order
+I’m craving 1 harira, 2 couscous, and 3 khobz
+Also, toss in 1 tagine and 2 Moroccan mint teas
+Let’s add 2 chebakia and 1 mechoui to that
+I want 3 tagines, 1 pastilla, and 2 khobz, pronto
+Can you add one more couscous and two harira?
+Include 2 zaalouk and 1 Moroccan mint tea, please
+Oh, and add 3 mechoui to the order
 
 Intent= order.complete - context: ongoing-order
 ==========================================
@@ -46,11 +74,25 @@ Done ordering it
 Place an order
 Done
 That's it
+I’m good now
+That’s everything
+Finalize my order
+I’m finished ordering
+All set with my order
+Nothing else for me
+That’s the whole order
+Ready to complete it
+No more items
+Wrap it up, please
+That’s all, thanks
+I’m done with the order
+Place it now
+That’s my full order
 
 Intent= order.remove - context: ongoing-order
 ==========================================
-No harira and chebakia in my order, please remove.
-Kindly take harira and chebakia off the order, please.
+No harira and chebakia in my order, please remove
+Kindly take harira and chebakia off the order, please
 I'd like to exclude harira and chebakia, please
 I no longer want the zaalouk in my order, please remove it
 Kindly exclude the zaalouk from my order
@@ -61,6 +103,24 @@ Hey, plz get rid of zaalouk and chebakia
 I don't want harira
 Remove tagine from my order
 Can you remove Moroccan mint tea?
+Take off the pastilla, please
+I don’t need the mechoui anymore
+Cancel the khobz from my order
+Please drop the couscous
+No more chebakia for me
+Remove 2 tagines from the order
+I changed my mind, no harira
+Get rid of the Moroccan mint tea, please
+Exclude the zaalouk and pastilla
+I don’t want any khobz now
+Scratch the mechoui off my order
+Can you delete the chebakia and couscous?
+Please remove one tagine and two Moroccan mint teas
+No pastilla or harira, take them off
+I’d like to cancel the zaalouk
+Drop the khobz and chebakia, please
+Remove all Moroccan mint teas from my order
+I don’t want the couscous anymore, remove it
 
 Intent= track.order
 ===================
@@ -68,6 +128,19 @@ Intent= track.order
 check the status of my order
 track order
 track existing order
+Where’s my order at?
+Can you check my order status?
+Tell me about my order
+I want to track my order
+What’s the status of my order?
+Track my food order
+How’s my order coming along?
+Can you look up my order?
+Check where my order is
+I need to know my order status
+Find my order for me
+Update me on my order
+order progress ?
 
 Text response:
 	Definitely. What is your order id?
@@ -87,3 +160,13 @@ here is my order id # 341
 7890
 123
 345
+My order ID is 9876
+It’s order number 54321
+Here’s the ID: 1122
+Order ID 789
+Check order 4567
+The number is 3210
+ID # 6543
+Order number is 8765
+Here’s my ID: 2345
+It’s 5678
