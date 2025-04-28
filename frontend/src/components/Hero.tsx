@@ -6,7 +6,7 @@ const Hero = () => {
       id="home" 
       className="relative h-screen flex items-center overflow-hidden"
       style={{
-        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://images.unsplash.com/photo-1548786811-dd6e453ccca7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80)",
+        backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/culture-background.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -41,7 +41,7 @@ const Hero = () => {
       <div 
         className="absolute bottom-0 left-0 right-0 h-16 bg-morocco-spice opacity-90" 
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1557433425-474d70557925?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80')",
+          backgroundImage: "url(/culture-background.jpg)",
           backgroundSize: "contain",
           backgroundRepeat: "repeat-x",
           clipPath: "polygon(0% 0%, 25% 100%, 50% 0%, 75% 100%, 100% 0%, 100% 100%, 0% 100%)",

@@ -13,9 +13,9 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "Michael Chen",
+    name: "Othmane Abderrazik",
     quote: "The couscous here is the best I've ever had outside of Morocco. The spices are perfectly balanced, and the service is exceptional. Can't wait to come back!",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80",
+    image: "/pdp.png",
     rating: 5,
   },
   {

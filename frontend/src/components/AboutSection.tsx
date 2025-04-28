@@ -53,7 +53,7 @@ const AboutSection = () => {
           <div className="relative">
             <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
               <img 
-                src="https://images.unsplash.com/photo-1466442929976-97f336a657be?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" 
+                src="/our_story.jpg" 
                 alt="Moroccan architecture" 
                 className="w-full h-auto"
               />
