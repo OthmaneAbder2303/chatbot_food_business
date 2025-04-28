@@ -53,9 +53,9 @@ def save_to_db(order: dict) -> int:
     # Insert individual items along with quantity in orders table
     for food_item, quantity in order.items():
         rcode = db_helper.insert_order_item(
-            next_order_id,
             food_item,
-            quantity
+            quantity,
+            next_order_id
         )
 
         if rcode == -1:
@@ -88,8 +88,8 @@ def complete_order(parameters: dict, session_id: str) -> JSONResponse:
 
 
 def add_to_order(parameters: dict, session_id: str) -> JSONResponse:
-    food_items = parameters.get("food-item", [])
-    quantities = parameters.get("number", [])
+    food_items = parameters["food-item"]
+    quantities = parameters["number"]
 
     if len(food_items) != len(quantities):
         fulfillment_text = "Sorry, I didn't understand. Can you please specify food items and quantities clearly?"
