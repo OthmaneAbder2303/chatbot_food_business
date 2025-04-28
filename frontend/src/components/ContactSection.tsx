@@ -50,7 +50,7 @@ const ContactSection = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="John Doe"
+                  placeholder="Mohammed Ali"
                   required
                   className="w-full"
                 />
@@ -65,7 +65,7 @@ const ContactSection = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="john@example.com"
+                  placeholder="ali476@example.com"
                   required
                   className="w-full"
                 />
@@ -80,7 +80,7 @@ const ContactSection = () => {
                   type="tel"
                   value={formData.phone}
                   onChange={handleChange}
-                  placeholder="(123) 456-7890"
+                  placeholder="+212 612345678"
                   className="w-full"
                 />
               </div>
@@ -117,7 +117,7 @@ const ContactSection = () => {
               </div>
               <div>
                 <h4 className="font-serif font-semibold text-lg">Location</h4>
-                <p className="text-gray-700">123 Marrakech Street<br />Spice District, MA 12345</p>
+                <p className="text-gray-700">784 Marrakech Street<br />Guéliz, MA 40140</p>
               </div>
             </div>
             
