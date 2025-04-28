@@ -22,14 +22,13 @@ const Hero = () => {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               size="lg" 
-              className="bg-morocco-spice hover:bg-morocco-terracotta text-white"
+              className="bg-morocco-gold hover:bg-morocco-terracotta text-white"
             >
               View Our Menu
             </Button>
             <Button 
               size="lg" 
-              variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-morocco-spice"
+              className="bg-morocco-gold hover:bg-morocco-terracotta text-white"
             >
               Make a Reservation
             </Button>

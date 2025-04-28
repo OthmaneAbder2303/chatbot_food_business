@@ -62,7 +62,7 @@ const menuItems = [
   },
   {
     id: 7,
-    name: "Thé à la Menthe",
+    name: "Moroccan Mint Tea",
     description: "Traditional sweet mint tea, Morocco's national drink.",
     price: "$2",
     category: "drinks",
@@ -106,10 +106,10 @@ const MenuSection = () => {
     <section id="menu" className="py-20 px-6 bg-cream">
       <div className="container mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-morocco-spice mb-4">Notre Menu</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-morocco-spice mb-4">Our Menu</h2>
           <div className="w-24 h-1 bg-morocco-terracotta mx-auto mb-8"></div>
           <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-            Découvrez les saveurs authentiques du Maroc à travers nos plats traditionnels préparés avec passion.
+          Discover the authentic flavors of Morocco through our traditional dishes prepared with passion.
           </p>
         </div>
 

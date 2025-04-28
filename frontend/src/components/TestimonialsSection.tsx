@@ -20,9 +20,9 @@ const testimonials = [
   },
   {
     id: 3,
-    name: "Emily Rodriguez",
+    name: "Halima Badr",
     quote: "As someone who grew up eating Moroccan food, I can attest to the authenticity of this restaurant. The mint tea ceremony alone is worth the visit!",
-    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80",
+    image: "hb.jpg",
     rating: 4,
   },
 ];

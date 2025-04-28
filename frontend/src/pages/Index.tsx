@@ -6,6 +6,7 @@ import MenuSection from "@/components/MenuSection";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
+import DialogflowMessenger from "@/components/DialogflowMessenger";
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
       <TestimonialsSection />
       <ContactSection />
       <Footer />
+      <DialogflowMessenger />
     </div>
   );
 };
