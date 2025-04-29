@@ -2,7 +2,6 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 import db_helper
 import generic_helper
-
 app = FastAPI()
 
 inprogress_orders = {}
@@ -26,7 +25,10 @@ async def handle_request(request: Request):
                 "fulfillmentText": "Sorry, I couldn't process your request due to missing session information."
             })
 
+        print(f"Received intent: {intent}")
+
         intent_handler_dict = {
+            'new.order': start_new_order,
             'order.add - context: ongoing-order': add_to_order,
             'order.remove - context: ongoing-order': remove_from_order,
             'order.complete - context: ongoing-order': complete_order,
@@ -39,7 +41,7 @@ async def handle_request(request: Request):
                 "fulfillmentText": "Sorry, I don't understand that request. Please try again."
             })
 
-        return intent_handler_dict[intent](parameters, session_id)
+        return intent_handler_dict[intent](parameters, session_id, output_contexts, payload['session'])
 
     except Exception as e:
         print(f"Error processing webhook request: {e}")
@@ -47,11 +49,48 @@ async def handle_request(request: Request):
             "fulfillmentText": "Sorry, something went wrong on our end. Please try again later."
         }, status_code=500)
 
+
+def start_new_order(parameters: dict, session_id: str, output_contexts: list, dialogflow_session: str) -> JSONResponse:
+    print(f"Session ID received: {session_id}")
+    print(f"Current sessions in memory: {list(inprogress_orders.keys())}")
+
+    if session_id in inprogress_orders:
+        print(f"Found existing order for session: {session_id}")
+        previous_order_id = inprogress_orders[session_id].get('order_id')
+        if previous_order_id:
+            print(f"Deleting previous order ID: {previous_order_id}")
+            db_helper.delete_order(previous_order_id)
+        del inprogress_orders[session_id]
+    else:
+        print("No existing order found for this session.")
+
+    # Generate a new order_id
+    new_order_id = db_helper.get_next_order_id()
+
+    # Initialize a new empty order
+    inprogress_orders[session_id] = {'order_id': new_order_id}
+
+    # Set the ongoing-order context with the new order_id
+    fulfillment_text = f"Ok, starting a new order. You can say things like 'I want two tagines and one Moroccan mint tea'. Make sure to specify a quantity for every food item! Also, we have only the following items on our menu: Tagine, Couscous, Harira, Pastilla, Mechoui, Zaalouk, Moroccan Mint Tea, Khobz, and Chebakia."
+
+    return JSONResponse(content={
+        "fulfillmentText": fulfillment_text,
+        "outputContexts": [
+            {
+                "name": f"{dialogflow_session}/contexts/ongoing-order",
+                "lifespanCount": 5,
+                "parameters": {"order_id": float(new_order_id)}  # Dialogflow expects numbers as floats
+            }
+        ]
+    })
+
 def save_to_db(order: dict) -> int:
-    next_order_id = db_helper.get_next_order_id()
+    next_order_id = order.get('order_id', db_helper.get_next_order_id())
 
     # Insert individual items along with quantity in orders table
     for food_item, quantity in order.items():
+        if food_item == 'order_id':
+            continue  # Skip the order_id key
         rcode = db_helper.insert_order_item(
             food_item,
             quantity,
@@ -66,7 +105,7 @@ def save_to_db(order: dict) -> int:
 
     return next_order_id
 
-def complete_order(parameters: dict, session_id: str) -> JSONResponse:
+def complete_order(parameters: dict, session_id: str, output_contexts: list, dialogflow_session: str) -> JSONResponse:
     if session_id not in inprogress_orders:
         fulfillment_text = "I'm having trouble finding your order. Sorry! Can you place a new order please?"
     else:
@@ -79,15 +118,15 @@ def complete_order(parameters: dict, session_id: str) -> JSONResponse:
             order_total = db_helper.get_total_order_price(order_id)
             fulfillment_text = f"Awesome. We have placed your order. " \
                                f"Here is your order id # {order_id}. " \
-                               f"Your order total is {order_total} which you can pay at the time of delivery!"
+                               f"Your order total is {order_total}$ which you can pay at the time of delivery!"
         del inprogress_orders[session_id]
 
     return JSONResponse(content={
-        "fulfillmentText": fulfillment_text
+        "fulfillmentText": fulfillment_text,
+        "outputContexts": []  # Clear ongoing-order context
     })
 
-
-def add_to_order(parameters: dict, session_id: str) -> JSONResponse:
+def add_to_order(parameters: dict, session_id: str, output_contexts: list, dialogflow_session: str) -> JSONResponse:
     food_items = parameters["food-item"]
     quantities = parameters["number"]
 
@@ -101,17 +140,31 @@ def add_to_order(parameters: dict, session_id: str) -> JSONResponse:
             current_food_dict.update(new_food_dict)
             inprogress_orders[session_id] = current_food_dict
         else:
-            inprogress_orders[session_id] = new_food_dict
+            # If no in-progress order, create one with the order_id from context
+            order_id = None
+            for context in output_contexts:
+                if "ongoing-order" in context["name"]:
+                    order_id = int(context["parameters"].get("order_id", 0))
+                    break
+            if not order_id:
+                order_id = db_helper.get_next_order_id()
+            inprogress_orders[session_id] = {'order_id': order_id, **new_food_dict}
 
         order_str = generic_helper.get_str_from_food_dict(inprogress_orders[session_id])
         fulfillment_text = f"So far you have: {order_str}. Do you need anything else?"
 
     return JSONResponse(content={
-        "fulfillmentText": fulfillment_text
+        "fulfillmentText": fulfillment_text,
+        "outputContexts": [
+            {
+                "name": f"{dialogflow_session}/contexts/ongoing-order",
+                "lifespanCount": 5,
+                "parameters": {"order_id": float(inprogress_orders[session_id]['order_id'])}
+            }
+        ]
     })
 
-
-def remove_from_order(parameters: dict, session_id: str) -> JSONResponse:
+def remove_from_order(parameters: dict, session_id: str, output_contexts: list, dialogflow_session: str) -> JSONResponse:
     if session_id not in inprogress_orders:
         return JSONResponse(content={
             "fulfillmentText": "I'm having trouble finding your order. Sorry! Can you place a new order please?"
@@ -124,7 +177,7 @@ def remove_from_order(parameters: dict, session_id: str) -> JSONResponse:
     no_such_items = []
 
     for item in food_items:
-        if item not in current_order:
+        if item not in current_order or item == 'order_id':
             no_such_items.append(item)
         else:
             removed_items.append(item)
@@ -137,18 +190,24 @@ def remove_from_order(parameters: dict, session_id: str) -> JSONResponse:
     if len(no_such_items) > 0:
         fulfillment_text += f'Your current order does not have {",".join(no_such_items)}. '
 
-    if len(current_order.keys()) == 0:
+    if len([k for k in current_order.keys() if k != 'order_id']) == 0:
         fulfillment_text += "Your order is empty!"
     else:
         order_str = generic_helper.get_str_from_food_dict(current_order)
         fulfillment_text += f"Here is what is left in your order: {order_str}"
 
     return JSONResponse(content={
-        "fulfillmentText": fulfillment_text.strip()
+        "fulfillmentText": fulfillment_text.strip(),
+        "outputContexts": [
+            {
+                "name": f"{dialogflow_session}/contexts/ongoing-order",
+                "lifespanCount": 5,
+                "parameters": {"order_id": float(current_order['order_id'])}
+            }
+        ]
     })
 
-
-def track_order(parameters: dict, session_id: str) -> JSONResponse:
+def track_order(parameters: dict, session_id: str, output_contexts: list, dialogflow_session: str) -> JSONResponse:
     try:
         # Handle 'number' for order ID
         order_id = int(parameters['number'])
@@ -166,3 +225,7 @@ def track_order(parameters: dict, session_id: str) -> JSONResponse:
     return JSONResponse(content={
         "fulfillmentText": fulfillment_text
     })
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

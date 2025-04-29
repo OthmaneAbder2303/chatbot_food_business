@@ -107,7 +107,44 @@ def get_order_status(order_id: int) -> str:
         print(f"An error occurred: {e}")
         return None
 
+# Function to call the PostgreSQL stored procedure to delete an order
+def delete_order(order_id: int) -> int:
+    try:
+        cursor = cnx.cursor()
+        # Delete all items from orders table for the given order_id
+        cursor.execute("DELETE FROM orders WHERE order_id = %s", (order_id,))
+
+        # Delete from order_tracking if no items remain for the order_id
+        cursor.execute("""
+                       DELETE
+                       FROM order_tracking
+                       WHERE order_id = %s
+                         AND NOT EXISTS (SELECT 1 FROM orders WHERE order_id = %s)
+                       """, (order_id, order_id))
+        print("I'm here")
+
+        # Check if any rows were affected (optional, for logging)
+        rows_affected = cursor.rowcount
+        cnx.commit()
+        cursor.close()
+
+        if rows_affected == 0:
+            print(f"No order found for order_id {order_id}")
+        else:
+            print(f"Order {order_id} deleted successfully!")
+        return 1
+
+    except psycopg2.Error as err:
+        print(f"Error deleting order: {err}")
+        cnx.rollback()
+        return -1
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        cnx.rollback()
+        return -1
+
 if __name__ == "__main__":
-    # Example usage for testing
+    # just for testing
     print(get_next_order_id())
     print(get_order_status(41))
+    print(delete_order(46))
