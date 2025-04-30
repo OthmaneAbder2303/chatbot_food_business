@@ -171,6 +171,7 @@ Order number is 8765
 Here’s my ID: 2345
 It’s 5678
 
+
 Intent= opening_hours
 ==================================================
 service hours ?
@@ -178,3 +179,15 @@ when do you close?
 Are you open on weekends?
 When do you open?
 opening hours?
+
+Text response:  We're open every day from 10 AM to 10 PM.
+
+
+Intent= contact
+==================================================
+Where is your restaurant located?
+What's your address?
+How can I contact you?
+
+Text response:  You can find us at 784 Main Street, Guéliz, Marrakech.
+📞 For any questions, feel free to call us at +212 6 12 34 56 78 or by mail at info@moroccantraditional.com.You can also make a reservation through our website or by calling us!
