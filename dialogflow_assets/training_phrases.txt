@@ -170,3 +170,11 @@ ID # 6543
 Order number is 8765
 Here’s my ID: 2345
 It’s 5678
+
+Intent= opening_hours
+==================================================
+service hours ?
+when do you close?
+Are you open on weekends?
+When do you open?
+opening hours?
